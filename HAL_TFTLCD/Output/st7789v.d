@@ -53,4 +53,5 @@
   ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_hcd.h \
   ..\..\Drivers\.\BSP\LCD\font.h ..\..\Drivers\.\BSP\SPI\spi.h \
   ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\.\stm32f1xx_hal.h \
-  ..\..\Drivers\.\SYSTEM\delay\delay.h
+  ..\..\Drivers\.\SYSTEM\delay\delay.h \
+  ..\..\Drivers\.\SYSTEM\usart\usart.h ..\..\Drivers\.\BSP\DMA\dma.h

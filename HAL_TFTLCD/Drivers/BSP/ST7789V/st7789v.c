@@ -2,6 +2,8 @@
 #include "./BSP/LCD/font.h"
 #include "./BSP/SPI/spi.h"
 #include "./SYSTEM/delay/delay.h"
+#include "./SYSTEM/usart/usart.h"
+#include "./BSP/DMA/dma.h"
 #include "string.h"
 
 //写指令
@@ -150,6 +152,7 @@ void st7789v_init(void)
 //设置显示窗口
 void st7789v_setwindows(uint16_t xstart,uint16_t ystart,uint16_t xend,uint16_t yend)
 {
+    
     //横坐标
     st7789v_write_cmd(0x2A);
     st7789v_write_data(xstart >> 8);
@@ -330,4 +333,61 @@ void lcd_printf(uint16_t x, uint16_t y,uint16_t fc, uint16_t bc, char *format, .
     // 调用 lcd_show_string 显示字符串
     // x, y 是坐标，strlen(string) 是字符串的实际长度
     st7789v_show_string(x, y,(char *)string,fc,bc);
+}
+
+//void read_id(void)
+//{
+//    uint8_t id[3];
+//    SPI_W_CS(0);
+//    SPI_W_RS(0);                // 命令模式
+//    spi_send_byte(0x04);        // RDDID
+//    SPI_W_RS(1);                // 数据模式
+//    // 第一个 dummy 字节（丢弃）
+//    spi_send_read_byte(0xFF);
+//    // 读取真正的 ID1, ID2, ID3
+//    id[0] = spi_send_read_byte(0xFF);
+//    id[1] = spi_send_read_byte(0xFF);
+//    id[2] = spi_send_read_byte(0xFF);
+//    SPI_W_CS(1);
+//    lcd_printf(10, 80, 0x0000, 0xFFFF, "LCD ID: %02X %02X %02X", id[0], id[1], id[2]);
+//}
+
+/**
+ * @brief 通过DMA分块显示存储在Flash中的图片（RGB565）
+ * @param img  图片数组指针（必须为 const，存储在Flash）
+ * @param width  图片宽度（像素）
+ * @param height 图片高度（像素）
+ */
+void st7789v_display_image_dma(const uint8_t *img, uint16_t width, uint16_t height)
+{
+    if (width > LCD_WIDTH || height > LCD_HEIGHT) return;
+
+    // 设置显示窗口
+    st7789v_setwindows(0, 0, width, height);
+    SPI_W_RS(1);   // 数据模式
+
+    // 行缓冲区（SRAM中，1920字节）
+    uint8_t row_buffer[10*width * 2];
+
+    for (uint16_t y = 0; y < height/10; y++) {
+        // 从Flash中读取一行，转换为字节流
+        for (uint16_t x = 0; x < 10*width*2; x++) {
+            row_buffer[x]=img[y*10*width*2+x];
+        }
+        
+//        // 等待上一行DMA完成（第一行跳过）
+//        if (y > 0) {
+//            while (!dma_transfer_complete);
+//            dma_transfer_complete = 0;
+//        }
+
+        // 启动当前行的DMA传输
+        while(__HAL_SPI_GET_FLAG(&hspi2, SPI_FLAG_BSY));
+        HAL_SPI_Transmit_DMA(&hspi2,row_buffer, 10*width * 2);
+    }
+
+    // 等待最后一行完成
+    while (!dma_transfer_complete);
+    dma_transfer_complete = 0;
+//    SPI_W_CS(1);   // 拉高CS
 }

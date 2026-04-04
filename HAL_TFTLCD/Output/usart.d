@@ -1,5 +1,5 @@
 ../../output/usart.o: ..\..\Drivers\SYSTEM\usart\usart.c \
-  ..\..\Drivers\.\SYSTEM\sys\sys.h \
+  ..\..\Drivers\.\SYSTEM\usart\usart.h ..\..\Drivers\.\SYSTEM\sys\sys.h \
   ..\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f1xx.h \
   ..\..\Drivers\CMSIS\Device\ST\STM32F1xx\Include\stm32f103xe.h \
   ..\..\Drivers\CMSIS\Include\core_cm3.h \
@@ -50,5 +50,4 @@
   ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pcd.h \
   ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_ll_usb.h \
   ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_pcd_ex.h \
-  ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_hcd.h \
-  ..\..\Drivers\.\SYSTEM\usart\usart.h
+  ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_hcd.h

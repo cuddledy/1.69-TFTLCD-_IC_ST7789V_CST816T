@@ -19,5 +19,6 @@
 
 void spi_init(void);
 void spi_send_byte(uint8_t bytedata);
+uint8_t spi_send_read_byte(uint8_t bytedata);
 
 #endif

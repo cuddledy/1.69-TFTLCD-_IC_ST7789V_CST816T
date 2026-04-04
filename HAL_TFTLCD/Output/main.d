@@ -52,6 +52,6 @@
   ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_hcd.h \
   ..\..\Drivers\.\SYSTEM\usart\usart.h \
   ..\..\Drivers\.\SYSTEM\delay\delay.h ..\..\Drivers\.\BSP\LED\led.h \
-  ..\..\Drivers\.\BSP\KEY\key.h \
+  ..\..\Drivers\.\BSP\KEY\key.h ..\..\Drivers\.\BSP\SPI\spi.h \
   ..\..\Drivers\STM32F1xx_HAL_Driver\Inc\.\stm32f1xx_hal.h \
-  ..\..\Drivers\.\BSP\ST7789V\st7789v.h
+  ..\..\Drivers\.\BSP\ST7789V\st7789v.h ..\..\Users\.\image.h

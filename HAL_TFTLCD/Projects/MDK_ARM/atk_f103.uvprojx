@@ -409,6 +409,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\Users\main.c</FilePath>
             </File>
+            <File>
+              <FileName>image.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Users\image.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -433,6 +438,11 @@
               <FileName>st7789v.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Drivers\BSP\ST7789V\st7789v.c</FilePath>
+            </File>
+            <File>
+              <FileName>dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Drivers\BSP\DMA\dma.c</FilePath>
             </File>
           </Files>
         </Group>

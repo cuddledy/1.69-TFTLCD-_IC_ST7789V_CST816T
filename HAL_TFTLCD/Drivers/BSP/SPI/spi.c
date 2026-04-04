@@ -1,5 +1,7 @@
 #include "./BSP/SPI/spi.h"
 #include "./SYSTEM/usart/usart.h"
+#include "./BSP/DMA/dma.h"
+
 SPI_HandleTypeDef hspi2;
 
 void spi_init(void)
@@ -67,7 +69,7 @@ void spi_init(void)
     hspi2.Init.CLKPolarity = SPI_POLARITY_LOW;   // SCK 空闲时为低电平 (Mode 0)
     hspi2.Init.CLKPhase = SPI_PHASE_1EDGE;
     hspi2.Init.NSS = SPI_NSS_SOFT;              // 软件管理 NSS (CS)
-    hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4; // 调整波特率分频系数
+    hspi2.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2; // 调整波特率分频系数
     hspi2.Init.FirstBit = SPI_FIRSTBIT_MSB;      // MSB 先发
     hspi2.Init.TIMode = SPI_TIMODE_DISABLE;      // 禁用 TI 模式
     hspi2.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE; // 禁用 CRC
@@ -77,10 +79,12 @@ void spi_init(void)
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_2, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOD, GPIO_PIN_1, GPIO_PIN_SET);
     
+    dma_spi2_init();
+    
      if(HAL_SPI_Init(&hspi2) != HAL_OK)
     {
         // SPI初始化失败
-        printf("SPI Init Error\r\n");
+        uart_printf("SPI Init Error\r\n");
     }
 }
 
@@ -91,8 +95,20 @@ void spi_send_byte(uint8_t bytedata)
     {
         // 传输错误处理 (可选)
         // Error_Handler();
-        printf("Error_Handler\r\n");
+        uart_printf("Error_Handler222\r\n");
         
     }
     //SPI_W_CS(1);
+}
+
+uint8_t spi_send_read_byte(uint8_t bytedata)
+{
+    uint8_t byte=0;
+    if ( HAL_SPI_TransmitReceive(&hspi2,&bytedata,&byte,1,500)!= HAL_OK)
+    {
+        // 传输错误处理 (可选)
+        // Error_Handler();
+        uart_printf("Error_Handler\r\n");
+    }
+    return byte;
 }
